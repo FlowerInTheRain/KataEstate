@@ -1,0 +1,4 @@
+TenantID,Name,ContactInfo,LeaseTermStart,LeaseTermEnd,RentalPaymentStatus,PropertyID
+1,Jean Dupont,+33123456789,2022-05-01,2023-04-30,Paid,3
+2,Marie Curie,+33456789012,2023-01-15,2024-01-14,Pending,2
+3,Claude Monet,+33789012345,2022-07-10,2023-07-09,Paid,2

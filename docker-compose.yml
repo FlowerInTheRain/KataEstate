@@ -1,0 +1,27 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - PYTHONPATH=/app
+      - FLASK_ENV=development
+      - DATABASE_URL=postgresql://kata:kataaubay@db:5432/kata
+    volumes:
+      - ./app/resources:/app/resources
+    depends_on:
+      - db
+
+  db:
+    build:
+      context: docker/db
+      dockerfile: Dockerfile
+    image: postgres:15
+    environment:
+      POSTGRES_USER: kata
+      POSTGRES_PASSWORD: kataaubay
+      POSTGRES_DB: kata
+    ports:
+      - "5432:5432"

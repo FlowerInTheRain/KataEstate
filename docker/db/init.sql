@@ -1,0 +1,1 @@
+CREATE SCHEMA IF NOT EXISTS kata_python;

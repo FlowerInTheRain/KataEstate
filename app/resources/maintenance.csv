@@ -1,0 +1,4 @@
+TaskID,Description,Status,ScheduledDate,PropertyID
+1,Fix leaking roof,Completed,2022-03-15,1
+2,Repaint exterior walls,In Progress,2023-02-20,3
+3,Update security system,Pending,2023-04-05,2
