@@ -42,7 +42,8 @@ def create_app(testing=False):
     healthcheck_paths = [healthcheck_ns]
     properties_paths = [properties_management_ns]
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "*"}}, support_credentials=True, methods=["GET", "POST", "PUT",
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}}, support_credentials=True, methods=["GET",
+                                                                                                          "POST", "PUT",
                                                                                          "DELETE", "OPTIONS"])
     logging.basicConfig(level=logging.DEBUG)
     handler = logging.StreamHandler()
