@@ -64,8 +64,7 @@ def create_app(testing=False):
             cleanup_properties()
 
             with open('resources/properties.csv', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                next(reader)
+                reader = csv.DictReader(csvfile)
                 properties = []
                 for row in reader:
                     new_property = from_csv(row)
@@ -73,8 +72,7 @@ def create_app(testing=False):
                 bulk_create_properties(properties)
 
             with open('resources/tenants.csv', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                next(reader)
+                reader = csv.DictReader(csvfile)
                 tenants = []
                 for row in reader:
                     new_tenant = to_db_tenant(row)
@@ -82,15 +80,14 @@ def create_app(testing=False):
                 bulk_create_tenants(tenants)
 
             with open('resources/maintenance.csv', newline='') as csvfile:
-                reader = csv.reader(csvfile)
-                next(reader)
+                reader = csv.DictReader(csvfile)
                 maintenances = []
                 for row in reader:
                     new_maintenance = to_db_maintenance(row)
                     maintenances.append(new_maintenance)
                 bulk_create_maintenances(maintenances)
 
-            app.logger.info("Database sanitized")
+    app.logger.info("Database sanitized")
     return app
 
 

@@ -119,12 +119,12 @@
           <div class="form-divs">
             <label>
               Prix d'achat :
-              <input formControlName="price" type="number"/>
+              <input formControlName="price" type="number" min="0" max="999999999" step="10"/>
             </label>
           </div>
 
           <div class="form-divs">
-            <button type="submit" [disabled]="propertyForm.invalid">Create Property</button>
+            <button type="submit" [disabled]="propertyForm.invalid">Ajouter une propriété</button>
           </div>
         </form>
       </ng-container>
