@@ -92,4 +92,5 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   protected readonly selectAllProperties = selectAllProperties;
+  protected readonly String = String;
 }
