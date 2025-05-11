@@ -34,7 +34,7 @@ add_property_model = ns.model('AddProperty', {
     'price': fields.Integer(required=True, min=0)
 })
 
-@ns.route('/')
+@ns.route("/")
 class BasePath(Resource):
     @ns.marshal_with(property_model, as_list=True)
     def get(self):  # put application's code here
@@ -48,8 +48,7 @@ class BasePath(Resource):
                                   request.json["price"])
         purchase_date = date.fromisoformat(request.json["purchase_date"])
         if purchase_date < date.today():
-            CommandProperties.create_property(new_property)
-            return Response(status=204)
+            return CommandProperties.create_property(new_property)
         else:
             return Response(status=400)
     @ns.expect(property_model, validate=True)
