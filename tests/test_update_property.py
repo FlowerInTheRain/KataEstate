@@ -1,9 +1,12 @@
 # tests/test_update_property.py
 
-import pytest
 from unittest.mock import patch, MagicMock
-from properties.repositories.CommandProperties import update_property
+
+import pytest
 from properties.models.Properties import Property
+from properties.repositories.CommandProperties import update_property
+
+@pytest.mark.usefixtures("app_context")
 
 @patch("properties.repositories.CommandProperties.session")
 def test_should_update_property(mock_session):

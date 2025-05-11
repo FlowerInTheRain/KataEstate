@@ -19,8 +19,10 @@ def valid_property_payload():
 @pytest.mark.usefixtures("app_context")
 @patch("properties.repositories.CommandProperties.create_property")
 def test_post_property_creates_property(mock_create, client, valid_property_payload):
+    mock_create.return_value = 1
     res = client.post("/api/properties/", json=valid_property_payload)
-    assert res.status_code == 204
+    assert res.status_code == 200
+    assert res.get_json() == mock_create.return_value
     mock_create.assert_called_once()
 
 

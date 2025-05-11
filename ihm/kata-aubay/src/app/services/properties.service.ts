@@ -14,7 +14,7 @@ export interface Property {
 @Injectable({
   providedIn: 'root',
 })
-export class PropertyService {
+export class PropertiesService {
   private apiUrl = 'http://localhost:5000/api/properties/';
 
   constructor(private http: HttpClient) {}

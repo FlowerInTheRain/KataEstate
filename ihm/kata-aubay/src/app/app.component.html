@@ -22,4 +22,11 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 
-<router-outlet/>
+<router-outlet>
+  <nav>
+  <ul>
+    <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Propriétés</a></li>
+    <li><a routerLink="/tenants" routerLinkActive="active">Locataires</a></li>
+  </ul>
+</nav>
+</router-outlet>

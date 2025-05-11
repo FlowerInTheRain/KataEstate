@@ -1,0 +1,147 @@
+<main class="main">
+  <div class="content">
+    <ng-container *ngIf="tenants.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>
+            Nom
+          </th>
+          <th>
+            Contact
+          </th>
+          <th>
+            Entrée en location
+          </th>
+          <th>
+            Fin de location
+          </th>
+          <th>
+            Statut paiement loyer
+          </th>
+          <th>
+            Localisation
+          </th>
+          <th>
+            actions
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tenant of tenants">
+            <td>
+              {{ tenant.name }}
+            </td>
+            <td>
+              <input type="tel" minlength="10" [(ngModel)]="tenant.contact_info"
+                     pattern=""/>
+            </td>
+            <td>
+              <input
+                type="date"
+                [(ngModel)]="tenant.lease_term_start"
+              />
+            </td>
+            <td>
+              <input
+                type="date"
+                [min]="tenant.lease_term_start"
+                [value]="tenant.lease_term_end"
+                [(ngModel)]="tenant.lease_term_end"
+              />
+            </td>
+            <td >
+              <select [(ngModel)]="tenant.rent_paid" [ngStyle]="{
+                backgroundColor: tenant.rent_paid === 'Paid' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }">
+                <option value="">Select type</option>
+                <option *ngFor="let t of paymentStatuses" [value]="t">{{ t }}</option>
+              </select>
+            </td>
+            <td >
+              {{ propertiesMap[tenant.property_id!]  }}
+            </td>
+            <td>
+              <button [ngStyle]="{backgroundColor:'#CCCCB2', border:'transparent', color:'#333'}"
+                      (click)="updateTenant(tenant)">
+                Modifier
+              </button>
+              <button #deleteTenant>
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form [formGroup]="tenantForm" (ngSubmit)="onSubmit()">
+        <div class="form-divs">
+
+          <label>
+            Nom :
+            <input formControlName="name" type="text"/>
+          </label>
+          <div *ngIf="tenantForm.get('name')?.invalid && tenantForm.get('name')?.touched">
+            Name is required and must be at least 10 characters.
+          </div>
+        </div>
+
+        <div class="form-divs">
+
+          <label>
+            Numéro de téléphone :
+            <input formControlName="contact_info" type="text"/>
+          </label>
+          <div *ngIf="tenantForm.get('contact_info')?.invalid && tenantForm.get('contact_info')?.touched">
+            Phone number is required and must be at least 10 characters.
+          </div>
+        </div>
+
+
+        <div class="form-divs">
+          <label>
+            Date début location :
+            <input formControlName="lease_term_start" type="date"/>
+          </label>
+
+        </div>
+        <div class="form-divs">
+          <label>
+            Date fin location :
+            <input formControlName="lease_term_end" type="date" [min]="tenantForm.get('lease_term_start')?.value"/>
+          </label>
+
+        </div>
+
+        <div class="form-divs">
+
+          <label>
+            Paiement du loyer :
+            <select formControlName="rent_paid">
+              <option value="">Selectionnez une valeur</option>
+              <option *ngFor="let ps of paymentStatuses" [value]="ps">{{ ps }}</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-divs">
+
+          <label>
+            Logement :
+            <select formControlName="property_id">
+              <option value="">Selectionnez une valeur</option>
+              <option *ngFor="let ps of properties"
+                      [ngStyle]="{
+                color: ps.status === 'Vacant' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }"
+                      [value]="ps.id">{{ ps.address }} {{ ps.status }}</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-divs">
+          <button type="submit" [disabled]="tenantForm.invalid">Ajouter une propriété</button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</main>
