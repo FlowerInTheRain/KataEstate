@@ -16,9 +16,6 @@ from flask_cors import CORS, cross_origin
 from flask import Flask
 from flask_restx import Api
 
-from healthcheck import healthcheck_paths
-from properties import properties_paths
-
 from db import Base, engine
 
 dictConfig({
@@ -39,10 +36,18 @@ dictConfig({
 
 
 
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "*"}})
 
-def create_app():
+def create_app(testing=False):
+    import properties.models
+    import tenants.models
+    import maintenances.models
+    from properties.endpoints.properties_management import ns as properties_management_ns
+    from healthcheck.endpoints.get_healthcheck import ns as healthcheck_ns
+
+    healthcheck_paths = [healthcheck_ns]
+    properties_paths = [properties_management_ns]
+    app = Flask(__name__)
+    CORS(app, resources={r"/*": {"origins": "*"}})
     logging.basicConfig(level=logging.DEBUG)
     handler = logging.StreamHandler()
     handler.setLevel(logging.DEBUG)
@@ -55,40 +60,44 @@ def create_app():
     all_namespaces = (healthcheck_paths + properties_paths)
     for ns in all_namespaces:
         api.add_namespace(ns)
+
+    with app.app_context():
+        Base.metadata.create_all(bind=engine)
+        if not testing:
+            cleanup_properties()
+            cleanup_properties()
+
+            with open('resources/properties.csv', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader)
+                properties = []
+                for row in reader:
+                    new_property = from_csv(row)
+                    properties.append(new_property)
+                bulk_create_properties(properties)
+
+            with open('resources/tenants.csv', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader)
+                tenants = []
+                for row in reader:
+                    new_tenant = to_db_tenant(row)
+                    tenants.append(new_tenant)
+                bulk_create_tenants(tenants)
+
+            with open('resources/maintenance.csv', newline='') as csvfile:
+                reader = csv.reader(csvfile)
+                next(reader)
+                maintenances = []
+                for row in reader:
+                    new_maintenance = to_db_maintenance(row)
+                    maintenances.append(new_maintenance)
+                bulk_create_maintenances(maintenances)
+
+            app.logger.info("Database sanitized")
     return app
 
-with app.app_context():
-    Base.metadata.create_all(bind=engine)
-    cleanup_properties()
 
-    with open('resources/properties.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        properties = []
-        for row in reader:
-            new_property = from_csv(row)
-            properties.append(new_property)
-        bulk_create_properties(properties)
-
-    with open('resources/tenants.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        tenants = []
-        for row in reader:
-            new_tenant = to_db_tenant(row)
-            tenants.append(new_tenant)
-        bulk_create_tenants(tenants)
-
-    with open('resources/maintenance.csv', newline='') as csvfile:
-        reader = csv.reader(csvfile)
-        next(reader)
-        maintenances = []
-        for row in reader:
-            new_maintenance = to_db_maintenance(row)
-            maintenances.append(new_maintenance)
-        bulk_create_maintenances(maintenances)
-
-    app.logger.info("Database sanitized")
 
 
 if __name__ == '__main__':

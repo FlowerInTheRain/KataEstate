@@ -1,1 +1,1 @@
-CREATE SCHEMA IF NOT EXISTS kata_python;
+CREATE SCHEMA kata_python;

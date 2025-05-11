@@ -67,9 +67,3 @@ class ByID(Resource):
     def delete(self, property_id: int):
         CommandProperties.delete_property(property_id)
         return Response(status=204)
-
-@ns.route('/json')
-class Json(Resource):
-    def get(self):  # put application's code here
-        return jsonify({"num":5})
-

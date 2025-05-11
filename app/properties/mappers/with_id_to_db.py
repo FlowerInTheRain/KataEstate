@@ -12,7 +12,7 @@ def from_csv(row):
     new_property.type = PropertyTypes(row[2]).value
     new_property.status = PropertyStatuses(row[3]).value
     new_property.purchase_date = datetime.strptime(row[4], "%Y-%m-%d").date()
-    new_property.price = int(row[5]) * 100
+    new_property.price = int(row[5])
     return new_property
 
 def from_json(json: dict):
@@ -22,5 +22,5 @@ def from_json(json: dict):
     property.type = PropertyTypes(json["type"]).value
     property.status = PropertyStatuses(json["status"]).value
     property.purchase_date = datetime.strptime(json["purchase_date"], "%Y-%m-%d").date()
-    property.price = json["price"] * 100
+    property.price = json["price"]
     return property

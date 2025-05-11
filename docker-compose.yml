@@ -8,7 +8,6 @@ services:
     environment:
       - PYTHONPATH=/app
       - FLASK_ENV=development
-      - DATABASE_URL=postgresql://kata:kataaubay@db:5432/kata
     volumes:
       - ./app/resources:/app/resources
     depends_on:

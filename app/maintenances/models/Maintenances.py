@@ -1,6 +1,6 @@
 from typing import Optional
 from db import Base
-from sqlalchemy import String, Integer, Date, ForeignKey
+from sqlalchemy import String, Integer, Date, ForeignKey, Sequence
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from maintenances.models.MaintenanceStatuses import MaintenanceStatuses
 
@@ -19,11 +19,12 @@ class Maintenances():
 
 class Maintenance(Base):
     __tablename__ = "maintenances"
-    id: Mapped[Optional[int]] = mapped_column(primary_key=True, autoincrement=True)
+    id: Mapped[Optional[int]] = mapped_column(Integer, Sequence("maintenances_id_seq", start=4), primary_key=True,
+                                              autoincrement=True)
     task_description = mapped_column(String(250), nullable=False)
     status = mapped_column(String(11), nullable=False)
     scheduled_date = mapped_column(Date, nullable=False)
-    property_id = mapped_column(ForeignKey("properties.id", ondelete='CASCADE'))
+    property_id = mapped_column(ForeignKey("kata_python.properties.id", ondelete='CASCADE'))
     property = relationship("Property", back_populates="child_maintenances")
 
     def __repr__(self):

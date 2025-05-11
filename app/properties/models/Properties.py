@@ -17,7 +17,7 @@ class Properties:
         self.type = type
         self.status = status
         self.purchase_date = purchase_date
-        self.price = price * 100
+        self.price = price
 
     def __repr__(self):
         return (f"Property(address={self.address}, "
@@ -27,10 +27,11 @@ class Properties:
                 f"price={self.price})")
 
 class Property(Base):
+
     __tablename__ = "properties"
 
     id: Mapped[Optional[int]] = mapped_column(Integer, Sequence("properties_id_seq", start=4), primary_key=True,
-                                              autoincrement=True,)
+                                              autoincrement=True)
     address: Mapped[str] = mapped_column(String(250),nullable=False)
     type: Mapped[str] = mapped_column(String(12),nullable=False)
     status: Mapped[str] = mapped_column(String(12),nullable=False)

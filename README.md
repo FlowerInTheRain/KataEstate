@@ -22,9 +22,12 @@ docker compose up --build
 python -m venv nom_du_venv
 
 # activer venv
-source venv/bin/activate
+source .venv/bin/activate
 (à la racine du projet)
 
 # créer requirements.txt depuis venv
 pip freeze > requirements.txt
 
+# executer les tests unitaires
+Lancer le venv
+PYTHONPATH=app pytest tests/
