@@ -3,7 +3,11 @@ import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URI = os.environ.get("DATABASE_URL")
+if os.environ.get("DATABASE_URL"):
+    DATABASE_URI = os.environ.get("DATABASE_URL")
+else:
+
+    DATABASE_URI = "postgresql://kata:kataaubay@localhost:5432/kata"
 engine = create_engine(DATABASE_URI, echo=True)
 
 

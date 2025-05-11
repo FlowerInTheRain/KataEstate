@@ -30,7 +30,7 @@ add_property_model = ns.model('AddProperty', {
     'address': fields.String(required=True, min_length=10),
     'type': fields.String(required=True, enum=[e.value for e in PropertyTypes]),
     'status': fields.String(required=True, enum=[e.value for e in PropertyStatuses]),
-    'purchase_date': fields.Date(required=True),
+    'purchase_date': fields.String,
     'price': fields.Integer(required=True, min=0)
 })
 

@@ -54,7 +54,6 @@ class BasePath(Resource):
         end_date = date.fromisoformat(request.json["lease_term_end"])
 
         if end_date > start_date:
-            current_app.logger.info("ouai")
             return CommandTenants.create_tenant(new_tenant)
         else:
             return Response(status=400)

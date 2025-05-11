@@ -1,6 +1,10 @@
+import os
+
 import pytest
+
 from app.app import create_app
-from db import Base, engine, session
+from db import Base, engine
+
 
 @pytest.fixture(scope="session")
 def app_context():
