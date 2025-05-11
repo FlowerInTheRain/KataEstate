@@ -1,1 +1,132 @@
-<p>properties works!</p>
+<main class="main">
+  <div class="content">
+      <ng-container *ngIf="properties$.length > 0">
+        <table>
+          <thead>
+          <tr>
+            <th>
+              Adresse
+            </th>
+            <th>
+              Type
+            </th>
+            <th>
+              Statut
+            </th>
+            <th>
+              Date d'achat
+            </th>
+            <th>
+              Prix
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let property of properties$">
+              <td>
+                {{ property.address }}
+              </td>
+              <td>
+                <select
+                  [(ngModel)]="property.type">
+                  <option *ngFor="let type of types"
+                          [value]="type">{{ type }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <select [ngStyle]="{
+                backgroundColor: property.status === 'Vacant' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }"
+                        [(ngModel)]="property.status">
+                  <option *ngFor="let status of statuses"
+                          [ngStyle]="{
+                backgroundColor: status === 'Vacant' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }"
+                          [value]="status">{{ status }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  type="date"
+                  id="start"
+                  name="purchase_date"
+                  [value]="property.purchase_date"
+                  [max]="today"/>
+              </td>
+              <td style="text-align: right">
+                <input type="number" min="0" max="999999999" step="10" [(ngModel)]="property.price"/>
+              </td>
+              <td>
+                <button [ngStyle]="{backgroundColor:'#CCCCB2', border:'transparent', color:'#333'}"
+                        (click)="updateProperty(property)">
+                  Modifier
+                </button>
+                <button #deleteProperty>
+                  Supprimer
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <form [formGroup]="propertyForm" (ngSubmit)="onSubmit()">
+          <div class="form-divs">
+
+            <label>
+              Adresse :
+              <input formControlName="address" type="text"/>
+            </label>
+            <div *ngIf="propertyForm.get('address')?.invalid && propertyForm.get('address')?.touched">
+              Address is required and must be at least 10 characters.
+            </div>
+          </div>
+
+          <div class="form-divs">
+
+            <label>
+              Type de propriété :
+              <select formControlName="type">
+                <option value="">Select type</option>
+                <option *ngFor="let t of types" [value]="t">{{ t }}</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-divs">
+            <label>
+              Statut :
+              <select formControlName="status">
+                <option value="">Select status</option>
+                <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+              </select>
+            </label>
+
+          </div>
+
+          <div class="form-divs">
+            <label>
+              Date d'acquisition :
+              <input formControlName="purchase_date" type="date" [max]="today"/>
+            </label>
+
+          </div>
+          <div class="form-divs">
+            <label>
+              Prix d'achat :
+              <input formControlName="price" type="number" min="0" max="999999999" step="10"/>
+            </label>
+          </div>
+
+          <div class="form-divs">
+            <button type="submit" [disabled]="propertyForm.invalid">Ajouter une propriété</button>
+          </div>
+        </form>
+      </ng-container>
+  </div>
+</main>

@@ -24,3 +24,17 @@ services:
       POSTGRES_DB: kata
     ports:
       - "5432:5432"
+
+  frontend:
+    build:
+      context: ihm/kata-aubay
+      dockerfile: ../../docker/front/Dockerfile # adjust path if Dockerfile is in docker/angular
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./ihm/kata-aubay:/app
+      - /app/node_modules
+    working_dir: /app
+    depends_on:
+      - api
+

@@ -7,12 +7,12 @@ from properties.models.PropertyTypes import PropertyTypes
 
 def from_csv(row):
     new_property = Property()
-    new_property.id = int(row[0])
-    new_property.address = row[1]
-    new_property.type = PropertyTypes(row[2]).value
-    new_property.status = PropertyStatuses(row[3]).value
-    new_property.purchase_date = datetime.strptime(row[4], "%Y-%m-%d").date()
-    new_property.price = int(row[5])
+    new_property.id = int(row["PropertyID"])
+    new_property.address = row["Address"]
+    new_property.type = PropertyTypes(row["PropertyType"]).value
+    new_property.status = PropertyStatuses(row["Status"]).value
+    new_property.purchase_date = datetime.strptime(row["PurchaseDate"], "%Y-%m-%d").date()
+    new_property.price = int(row["Price"])
     return new_property
 
 def from_json(json: dict):

@@ -6,7 +6,7 @@ from properties.models.Properties import Property
 from sqlalchemy import text, Integer
 
 from properties.models.Properties import Properties
-
+from properties.repositories import QueryProperties
 
 def bulk_create_properties(properties: List[Property]):
     session.bulk_save_objects(properties)
@@ -23,9 +23,10 @@ def create_property(new_property: Properties):
     current_app.logger.info(to_db)
     session.add(to_db)
     session.commit()
+    return to_db.id
 
 def cleanup_properties():
-    properties = session.query(Property).all()
+    properties = QueryProperties.get_all_properties()
 
     # Delete all
     for in_db in properties:
