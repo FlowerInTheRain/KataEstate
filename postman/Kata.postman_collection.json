@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "6f4c32a1-8460-4aab-b496-d3461930f574",
+		"name": "Kata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26619714"
+	},
+	"item": [
+		{
+			"name": "properties",
+			"item": [
+				{
+					"name": "get all properties",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/properties/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"properties",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update property",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"address\": \"12 Rue des Lilas, Paris, 75015\",\r\n    \"type\": \"Residential\",\r\n    \"status\": \"Vacant\",\r\n    \"purchase_date\": \"2020-06-15\",\r\n    \"price\": 1500000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/properties/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"properties",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create property",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"address\": \"12 Rue des Lilas, Paris, 75015\",\r\n    \"type\": \"Residential\",\r\n    \"status\": \"Vacant\",\r\n    \"purchase_date\": \"2020-06-15\",\r\n    \"price\": 1500000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/properties/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"properties",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete property",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"address\": \"12 Rue des Lilas, Paris, 75015\",\r\n    \"type\": \"Residential\",\r\n    \"status\": \"Vacant\",\r\n    \"purchase_date\": \"2020-06-15\",\r\n    \"price\": 1500000\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/properties/:property_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"properties",
+								":property_id"
+							],
+							"variable": [
+								{
+									"key": "property_id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
