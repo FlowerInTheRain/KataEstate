@@ -38,7 +38,9 @@ dictConfig({
 def create_app(testing=False):
     from properties.endpoints.properties_management import ns as properties_management_ns
     from healthcheck.endpoints.get_healthcheck import ns as healthcheck_ns
+    from tenants.endpoints.tenants_management import ns as tenants_ns
 
+    tenants_paths  = [tenants_ns]
     healthcheck_paths = [healthcheck_ns]
     properties_paths = [properties_management_ns]
     app = Flask(__name__)
@@ -53,7 +55,7 @@ def create_app(testing=False):
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
     api = Api(app, doc='/swagger', prefix='/api', mask_swagger=False)
-    all_namespaces = (healthcheck_paths + properties_paths)
+    all_namespaces = (healthcheck_paths + properties_paths + tenants_paths )
     for ns in all_namespaces:
         api.add_namespace(ns)
 

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren} from '@angular/core';
 import {NgForOf, NgIf, NgStyle} from "@angular/common";
-import {Property, PropertyService} from '../services/properties.service';
+import {Property, PropertiesService} from '../services/properties.service';
 import {fromEvent, interval, of, startWith, Subscription, switchMap, tap, withLatestFrom} from 'rxjs';
 import {addProperty, removeProperty, setProperties, updateProperty} from './properties.actions';
 import {catchError} from 'rxjs/operators';
@@ -21,8 +21,7 @@ import {selectAllProperties} from './properties.selectors';
   styleUrl: './properties.component.scss'
 })
 export class PropertiesComponent implements OnInit, AfterViewInit, OnDestroy {
-   propertyForm!: FormGroup;
-
+  propertyForm!: FormGroup;
   properties$: Property[] = [];
   types = ['Residential', 'Commercial']
   statuses = ['Vacant', 'Occupied'];
@@ -30,7 +29,7 @@ export class PropertiesComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChildren("deleteProperty") deleteButtons!: QueryList<ElementRef<HTMLButtonElement>>;
   private clickSubs: Subscription[] = [];
 
-  constructor(private propertyService: PropertyService, private propertiesStore: Store<Property>, private fb: FormBuilder) {
+  constructor(private propertyService: PropertiesService, private propertiesStore: Store<Property>, private fb: FormBuilder) {
     const now = new Date();
     this.today = now.toISOString().split('T')[0];
   }
@@ -41,11 +40,10 @@ export class PropertiesComponent implements OnInit, AfterViewInit, OnDestroy {
     interval(2 * 60 * 1000) // 2 minutes
       .pipe(
         startWith(0), // pour déclencher immédiatement au démarrage
-        switchMap(() => this.propertyService.getAllProperties())
+        switchMap(() => this.propertiesStore.select(selectAllProperties))
       )
       .subscribe({
         next: (properties) => {
-          this.propertiesStore.dispatch(setProperties({properties}));
           this.properties$ = properties.map(p => ({...p}));
         },
         error: (err) => {
@@ -116,12 +114,14 @@ export class PropertiesComponent implements OnInit, AfterViewInit, OnDestroy {
           // @ts-ignore
           newProperty.id = id
           this.propertiesStore.dispatch(addProperty({property: newProperty}))
-          this.propertyService.getAllProperties().subscribe({
-            next: (properties) => {
+          this.propertiesStore.select(selectAllProperties).subscribe(
+            {
+              next: (properties) => {
               this.properties$ = properties.map(p => ({...p}));
               this.initForm()
             }
-          })
+            }
+          )
       },
         error: (err) => console.error('Failed to update:', err)
       })

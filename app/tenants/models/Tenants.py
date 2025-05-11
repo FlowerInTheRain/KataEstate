@@ -12,14 +12,16 @@ from properties.models.PaymentStatuses import PaymentStatuses
 class Tenants:
     def __init__(self, name: str,
                  contact_info: str,
-                 lease_term_start: Date,
-                 lease_term_end: Date,
-                 rent_paid: PaymentStatuses):
+                 lease_term_start: date,
+                 lease_term_end: date,
+                 rent_paid: PaymentStatuses,
+                 property_id:int):
         self.name = name
         self.contact_info = contact_info
         self.lease_term_start = lease_term_start
         self.lease_term_end = lease_term_end
         self.rent_paid = rent_paid
+        self.property_id = property_id
 
     def __repr__(self):
         status = "Paid" if self.rent_paid else "Unpaid"
