@@ -16,6 +16,7 @@ A executer dans le répertoire du docker-compose.yaml
 ```
 docker compose up --build
 (pour supprimer les containers en cli) => docker rm $(docker ps -a -q)
+Le front, back, et la BDD sont conteneurisés.
 ```
  
 # créer venv
@@ -31,3 +32,12 @@ pip freeze > requirements.txt
 # executer les tests unitaires
 Lancer le venv
 PYTHONPATH=app pytest tests/
+
+# Collection Postman
+
+Une collection importable postman est disponible dans le répertoire postman
+
+# CSV
+
+Les csv se situent dans le dossier app/resources/
+
