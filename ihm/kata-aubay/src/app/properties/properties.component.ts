@@ -9,7 +9,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {selectAllProperties} from './properties.selectors';
 
 @Component({
-  selector: 'app-properties',
+  selector: 'api-properties',
   imports: [
     NgForOf,
     NgIf,

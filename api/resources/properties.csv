@@ -1,0 +1,4 @@
+PropertyID,Address,PropertyType,Status,PurchaseDate,Price
+1,"12 Rue des Lilas, Paris, 75015",Residential,Vacant,2020-06-15,350000
+2,"8 Avenue Foch, Lyon, 69006",Commercial,Occupied,2019-11-30,950000
+3,"3 Quai de Grenelle, Marseille, 13002",Residential,Occupied,2021-01-20,400000

@@ -9,7 +9,7 @@ from tenants.repositories.CommandTenants import (
     delete_tenant
 )
 
-from app.properties.models.PaymentStatuses import PaymentStatuses
+from api.properties.models.PaymentStatuses import PaymentStatuses
 
 
 @pytest.mark.usefixtures("app_context")

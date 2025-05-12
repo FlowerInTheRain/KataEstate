@@ -6,11 +6,11 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - PYTHONPATH=/app
+      - PYTHONPATH=/api
       - FLASK_ENV=development
       - DATABASE_URL=postgresql+psycopg2://kata:kataaubay@db:5432/kata
     volumes:
-      - ./app/resources:/app/resources
+      - ./api/resources:/api/resources
     depends_on:
       - db
 
@@ -34,8 +34,6 @@ services:
       - "4200:4200"
     volumes:
       - ./ihm/kata-aubay:/app
-      - /app/node_modules
-    working_dir: /app
     depends_on:
       - api
 
