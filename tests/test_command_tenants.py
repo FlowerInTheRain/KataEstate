@@ -47,10 +47,12 @@ def test_create_tenant_returns_id(mock_session):
 @patch("tenants.repositories.CommandTenants.session")
 @patch("tenants.repositories.CommandTenants.current_app")
 def test_update_tenant(mock_1, mock_session):
-    existing = MagicMock(spec=Tenant)
+    existing = Tenant()
+    existing.id = 1
+    existing.name = "Sid Bennaceur"
     mock_session.get.return_value = existing
 
-    updated = MagicMock(spec=Tenant)
+    updated = Tenant()
     updated.id = 1
     updated.name = "Sid Bennaceur"
     updated.contact_info = "sa.bennaceur@example.com"

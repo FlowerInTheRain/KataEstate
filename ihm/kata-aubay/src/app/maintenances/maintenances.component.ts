@@ -11,7 +11,7 @@ import {Maintenance, MaintenancesService} from '../services/maintenances.service
 
 
 @Component({
-  selector: 'api-maintenances',
+  selector: 'app-maintenances',
   imports: [
     NgForOf,
     NgIf,

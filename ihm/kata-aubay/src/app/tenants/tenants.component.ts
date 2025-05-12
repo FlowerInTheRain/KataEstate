@@ -10,7 +10,7 @@ import {selectAllProperties} from '../properties/properties.selectors';
 
 
 @Component({
-  selector: 'api-tenants',
+  selector: 'app-tenants',
   imports: [
     NgForOf,
     NgIf,

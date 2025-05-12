@@ -38,17 +38,17 @@ def test_get_tasks_returns_list(mock_get, client):
     res = client.get("/app/maintenances/")
     assert res.status_code == 200
     data = res.get_json()
-    print(data[0]["name"])
+    print(data[0]["task_description"])
     print("lol")
     assert isinstance(data, list)
-    assert data[0]["name"] == "Sid Bennaceur"
+    assert data[0]["task_description"] == "Sid Bennaceur"
 
 
 # ---------- POST ----------
 @patch("maintenances.repositories.CommandMaintenances.create_maintenance_task")
-def test_post_tenant_valid(mock_create, client, valid_tenant_payload):
+def test_post_task_valid(mock_create, client, valid_task_payload):
     mock_create.return_value = 1
-    res = client.post("/app/maintenances/", json=valid_tenant_payload)
+    res = client.post("/app/maintenances/", json=valid_task_payload)
     assert res.status_code == 200
     assert res.get_json() == mock_create.return_value
     mock_create.assert_called_once()
@@ -77,8 +77,8 @@ def test_put_task_invalid_date(client, valid_tenant_update_payload):
 
 
 # ---------- DELETE ----------
-@patch("tenants.repositories.CommandTenants.delete_maintenance_task")
-def test_delete_tenant(mock_delete, client):
+@patch("maintenances.repositories.CommandMaintenances.delete_maintenance_task")
+def test_delete_maintenance(mock_delete, client):
     res = client.delete("/app/maintenances/1")
     assert res.status_code == 204
     mock_delete.assert_called_once_with(1)

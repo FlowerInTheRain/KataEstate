@@ -41,8 +41,9 @@ def test_create_tenant_returns_id(mock_session):
 
 @patch("maintenances.repositories.CommandMaintenances.session")
 @patch("maintenances.repositories.CommandMaintenances.current_app")
-def test_update_tenant(mock_1, mock_session):
+def test_update_task(mock_1, mock_session):
     existing = MagicMock(spec=Maintenance)
+    existing.id = 1
     mock_session.get.return_value = existing
 
     updated = MagicMock(spec=Maintenance)
@@ -51,13 +52,11 @@ def test_update_tenant(mock_1, mock_session):
 
     update_maintenance_task(updated)
 
-    assert existing.name == updated.name
-    assert existing.contact_info == updated.contact_info
-    assert existing.lease_term_start == updated.lease_term_start
-    assert existing.lease_term_end == updated.lease_term_end
+    assert existing.task_description == updated.task_description
+    assert existing.id == updated.id
     mock_session.commit.assert_called_once()
 
-@patch("tenants.repositories.CommandTenants.session")
+@patch("maintenances.repositories.CommandMaintenances.session")
 def test_delete_tenant(mock_session):
     mock_existing = MagicMock(spec=Maintenance)
     mock_session.get.return_value = mock_existing
