@@ -8,10 +8,11 @@ from maintenances.models.MaintenanceStatuses import MaintenanceStatuses
 
 
 class Maintenances():
-    def __init__(self, task_description: str, status: MaintenanceStatuses, scheduled_date: Date):
+    def __init__(self, task_description: str, status: MaintenanceStatuses, scheduled_date: Date, property_id:int):
         self.task_description = task_description
         self.status = status
         self.scheduled_date = scheduled_date
+        self.property_id = property_id
 
         def __repr__(self):
             return (f"Maintenances(task_description='{self.task_description}', status='{self.status}', "

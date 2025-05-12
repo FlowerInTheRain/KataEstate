@@ -124,7 +124,9 @@ export class TenantsComponent {
             this.tenants.push(newTenant)
             alert("Locataire ajouté avec succès")
           },
-          error: (err) => console.error('Failed to update:', err)
+          error: (err) => alert("Veuillez vérifier les données saisies (le numéro de téléphone doit être valide, le" +
+            " nom doit être composé d'au moins 5 caractères, la date de fin de location doit être ultérieure à la" +
+            " date de début de location")
         })
       }
 
