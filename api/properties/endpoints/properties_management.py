@@ -1,21 +1,16 @@
 from datetime import date
 
-from flask import jsonify, request, current_app, Response
-from flask_restx import Resource, Namespace, api, fields
-
-from properties.repositories import QueryProperties
+from flask import request, Response
+from flask_restx import Resource, Namespace, fields
+from properties.mappers.with_id_to_db import from_json
 from properties.models.Properties import Properties
-from properties.repositories import CommandProperties
-
+from properties.models.Properties import Property
 from properties.models.PropertyStatuses import PropertyStatuses
 from properties.models.PropertyTypes import PropertyTypes
-from werkzeug.exceptions import BadRequest
+from properties.repositories import CommandProperties
+from properties.repositories import QueryProperties
 
-from properties.models.Properties import Property
-
-from properties.mappers.with_id_to_db import from_json
-
-ns = Namespace('properties', description='base healthcheck test operations')
+ns = Namespace('properties', description='CRUD Operations on real estate')
 
 property_model = ns.model('Property', {
     'id': fields.Integer,

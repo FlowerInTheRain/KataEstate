@@ -10,25 +10,25 @@ from properties.models.PaymentStatuses import PaymentStatuses
 from tenants.models.Tenants import Tenants, Tenant
 from tenants.repositories import CommandTenants
 
-ns = Namespace('tenants', description='base healthcheck test operations')
+ns = Namespace('tenants', description='CRUD Operations on tenants')
 
 tenant_model = ns.model('Property', {
     'id': fields.Integer,
-    'name': fields.String,
-    'contact_info': fields.String,
-    'lease_term_start': fields.String,
-    'lease_term_end': fields.String,
-    'rent_paid': fields.String,
-    'property_id': fields.Integer
+    'name': fields.String(required=True, min_length=5, max_length=50),
+    'contact_info': fields.String(required=True, max_length=12,min_length=10),
+    'lease_term_start': fields.String(required=True, min_length=10, max_length=10),
+    'lease_term_end': fields.String(required=True, min_length=10, max_length=10),
+    'rent_paid': fields.String(required=True, enum=[e.value for e in PaymentStatuses]),
+    'property_id': fields.Integer(required=True)
 })
 
 add_tenant_model = ns.model('AddProperty', {
-    'name': fields.String,
-    'contact_info': fields.String,
-    'lease_term_start': fields.String,
-    'lease_term_end': fields.String,
-    'rent_paid': fields.String,
-    'property_id': fields.Integer
+    'name': fields.String(required=True, min_length=5, max_length=50),
+    'contact_info': fields.String(required=True, max_length=12,min_length=10),
+    'lease_term_start': fields.String(required=True, min_length=10, max_length=10),
+    'lease_term_end': fields.String(required=True, min_length=10, max_length=10),
+    'rent_paid': fields.String(required=True, enum=[e.value for e in PaymentStatuses]),
+    'property_id': fields.Integer(required=True)
 })
 
 

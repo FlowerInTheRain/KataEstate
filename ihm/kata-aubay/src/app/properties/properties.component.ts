@@ -122,6 +122,7 @@ export class PropertiesComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             }
           )
+          alert("Propriété ajoutée avec succès")
       },
         error: (err) => console.error('Failed to update:', err)
       })

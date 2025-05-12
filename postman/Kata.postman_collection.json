@@ -122,6 +122,250 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "tenants",
+			"item": [
+				{
+					"name": "get all tenants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update tenant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 1,\r\n        \"name\": \"Jean Dupont\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Jean DuponD\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete tenant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Jean DuponD\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/:tenant_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								":tenant_id"
+							],
+							"variable": [
+								{
+									"key": "tenant_id",
+									"value": "13"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "maintenances",
+			"item": [
+				{
+					"name": "get all tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:5000/api/maintenances/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"maintenances",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update task",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"id\": 1,\r\n        \"name\": \"Jean Dupont\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/maintenances/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"maintenances",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Jean DuponD\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"name\": \"Jean DuponD\",\r\n        \"contact_info\": \"+33123456111\",\r\n        \"lease_term_start\": \"2022-05-01\",\r\n        \"lease_term_end\": \"2023-04-30\",\r\n        \"rent_paid\": \"Paid\",\r\n        \"property_id\": 3\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/api/tenants/:tenant_id",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"api",
+								"tenants",
+								":tenant_id"
+							],
+							"variable": [
+								{
+									"key": "tenant_id",
+									"value": "13"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

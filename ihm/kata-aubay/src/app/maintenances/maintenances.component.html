@@ -1,1 +1,112 @@
-<p>maintenances works!</p>
+<main class="main">
+  <div class="content">
+    <ng-container *ngIf="maintenances.length > 0">
+      <table>
+        <thead>
+        <tr>
+          <th>
+            Description
+          </th>
+          <th>
+            Statut
+          </th>
+          <th>
+            Date prévue
+          </th>
+          <th>
+            Localisation
+          </th>
+          <th>
+            actions
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let task of maintenances">
+            <td>
+              <input type="text" minlength="10" [(ngModel)]="task.task_description"/>
+            </td>
+            <td >
+              <select [(ngModel)]="task.status" [ngStyle]="{
+                backgroundColor: task.status === 'Completed' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }">
+                <option value="">Select type</option>
+                <option *ngFor="let t of taskCompletionStatus" [value]="t">{{ t }}</option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="date"
+                [(ngModel)]="task.scheduled_date"
+              />
+            </td>
+
+            <td >
+              {{ propertiesMap[task.property_id!]  }}
+            </td>
+            <td>
+              <button [ngStyle]="{backgroundColor:'#CCCCB2', border:'transparent', color:'#333'}"
+                      (click)="updateTask(task)">
+                Modifier
+              </button>
+              <button #deleteMaintenanceTask>
+                Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <form [formGroup]="maintenanceForm" (ngSubmit)="onSubmit()">
+        <div class="form-divs">
+
+          <label>
+            Description :
+            <input formControlName="task_description" type="text"/>
+          </label>
+          <div *ngIf="maintenanceForm.get('task_description')?.invalid && maintenanceForm.get('task_description')?.touched">
+            Description is required and must be at least 10 characters.
+          </div>
+        </div>
+
+        <div class="form-divs">
+
+          <label>
+            Statut de la tâche :
+            <select formControlName="status">
+              <option value="">Selectionnez une valeur</option>
+              <option *ngFor="let ps of taskCompletionStatus" [value]="ps">{{ ps }}</option>
+            </select>
+          </label>
+        </div>
+
+
+        <div class="form-divs">
+          <label>
+            Date prévue :
+            <input formControlName="scheduled_date" type="date"/>
+          </label>
+
+        </div>
+        <div class="form-divs">
+
+          <label>
+            Logement :
+            <select formControlName="property_id">
+              <option value="">Selectionnez une valeur</option>
+              <option *ngFor="let ps of properties"
+                      [ngStyle]="{
+                color: ps.status === 'Vacant' ? '#76b852' : '#f46b45',
+                fontWeight:'600'
+              }"
+                      [value]="ps.id">{{ ps.address }} {{ ps.status }}</option>
+            </select>
+          </label>
+        </div>
+        <div class="form-divs">
+          <button type="submit" [disabled]="maintenanceForm.invalid">Ajouter une tâche</button>
+        </div>
+      </form>
+    </ng-container>
+  </div>
+</main>
