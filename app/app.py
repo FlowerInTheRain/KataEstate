@@ -39,12 +39,15 @@ def create_app(testing=False):
     from properties.endpoints.properties_management import ns as properties_management_ns
     from healthcheck.endpoints.get_healthcheck import ns as healthcheck_ns
     from tenants.endpoints.tenants_management import ns as tenants_ns
+    from maintenances.endpoints.maintenances_management import ns as maintenance_tasks_ns
 
     tenants_paths  = [tenants_ns]
     healthcheck_paths = [healthcheck_ns]
     properties_paths = [properties_management_ns]
+    maintenances_paths = [maintenance_tasks_ns]
+
     app = Flask(__name__)
-    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}}, support_credentials=True,
+    CORS(app, resources={r"/app/*": {"origins": "http://localhost:4200"}}, support_credentials=True,
          methods=["GET","POST", "PUT","DELETE", "OPTIONS"])
     logging.basicConfig(level=logging.DEBUG)
     handler = logging.StreamHandler()
@@ -54,8 +57,8 @@ def create_app(testing=False):
     )
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
-    api = Api(app, doc='/swagger', prefix='/api', mask_swagger=False)
-    all_namespaces = (healthcheck_paths + properties_paths + tenants_paths )
+    api = Api(app, doc='/swagger', prefix='/app', mask_swagger=False)
+    all_namespaces = (healthcheck_paths + properties_paths + tenants_paths + maintenances_paths )
     for ns in all_namespaces:
         api.add_namespace(ns)
 

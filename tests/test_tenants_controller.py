@@ -39,7 +39,7 @@ def test_get_tenants_returns_list(mock_get, client):
             property_id=1
         )
     ]
-    res = client.get("/api/tenants/")
+    res = client.get("/app/tenants/")
     assert res.status_code == 200
     data = res.get_json()
     print(data[0]["name"])
@@ -52,7 +52,7 @@ def test_get_tenants_returns_list(mock_get, client):
 @patch("tenants.repositories.CommandTenants.create_tenant")
 def test_post_tenant_valid(mock_create, client, valid_tenant_payload):
     mock_create.return_value = 1
-    res = client.post("/api/tenants/", json=valid_tenant_payload)
+    res = client.post("/app/tenants/", json=valid_tenant_payload)
     assert res.status_code == 200
     assert res.get_json() == mock_create.return_value
     mock_create.assert_called_once()
@@ -61,27 +61,27 @@ def test_post_tenant_valid(mock_create, client, valid_tenant_payload):
 def test_post_tenant_invalid_date(client, valid_tenant_payload):
     # Lease end before start
     valid_tenant_payload["lease_term_end"] = str(date.today() - timedelta(days=20))
-    res = client.post("/api/tenants/", json=valid_tenant_payload)
+    res = client.post("/app/tenants/", json=valid_tenant_payload)
     assert res.status_code == 400
 
 
 # ---------- PUT ----------
 @patch("tenants.repositories.CommandTenants.update_tenant")
 def test_put_tenant_valid(mock_update, client, valid_tenant_update_payload):
-    res = client.put("/api/tenants/", json=valid_tenant_update_payload)
+    res = client.put("/app/tenants/", json=valid_tenant_update_payload)
     assert res.status_code == 204
     mock_update.assert_called_once()
 
 
 def test_put_tenant_invalid_date(client, valid_tenant_update_payload):
     valid_tenant_update_payload["lease_term_end"] = str(date.today() - timedelta(days=20))
-    res = client.put("/api/tenants/", json=valid_tenant_update_payload)
+    res = client.put("/app/tenants/", json=valid_tenant_update_payload)
     assert res.status_code == 400
 
 
 # ---------- DELETE ----------
 @patch("tenants.repositories.CommandTenants.delete_tenant")
 def test_delete_tenant(mock_delete, client):
-    res = client.delete("/api/tenants/1")
+    res = client.delete("/app/tenants/1")
     assert res.status_code == 204
     mock_delete.assert_called_once_with(1)

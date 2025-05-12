@@ -20,7 +20,7 @@ def valid_property_payload():
 @patch("properties.repositories.CommandProperties.create_property")
 def test_post_property_creates_property(mock_create, client, valid_property_payload):
     mock_create.return_value = 1
-    res = client.post("/api/properties/", json=valid_property_payload)
+    res = client.post("/app/properties/", json=valid_property_payload)
     assert res.status_code == 200
     assert res.get_json() == mock_create.return_value
     mock_create.assert_called_once()
@@ -31,7 +31,7 @@ def test_get_properties_returns_list(mock_get, client):
     mock_get.return_value = [
         MagicMock(id=1, address="123 Main Street", type="Residential", status="Vacant", purchase_date="2021-01-01", price=100000)
     ]
-    res = client.get("/api/properties/")
+    res = client.get("/app/properties/")
     assert res.status_code == 200
     data = res.get_json()
     assert isinstance(data, list)
@@ -47,13 +47,13 @@ def test_put_property_updates(mock_update, client, valid_property_payload):
         "address": "456 Updated Street"
     })
 
-    res = client.put("/api/properties/", json=updated_payload)
+    res = client.put("/app/properties/", json=updated_payload)
     assert res.status_code == 204
     mock_update.assert_called_once()
 
 
 @patch("properties.repositories.CommandProperties.delete_property")
 def test_delete_property(mock_delete, client):
-    res = client.delete("/api/properties/1")
+    res = client.delete("/app/properties/1")
     assert res.status_code == 204
     mock_delete.assert_called_once_with(1)

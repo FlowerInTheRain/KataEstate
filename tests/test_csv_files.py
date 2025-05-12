@@ -6,7 +6,7 @@ class TestCSVFiles:
     @pytest.fixture(autouse=True)
     def setup(self):
         # This runs before each test in the class
-        self.resources_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'api/resources')
+        self.resources_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app/resources')
         self.csv_files = [
             f for f in os.listdir(self.resources_path)
             if f.endswith('.csv')
@@ -21,7 +21,7 @@ class TestCSVFiles:
         assert len(self.csv_files) == 3, "Aucun fichier CSV trouvé dans le dossier 'resources'."
 
     @pytest.mark.parametrize("filename", [
-        f for f in os.listdir(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'api/resources'))
+        f for f in os.listdir(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'app/resources'))
         if f.endswith('.csv')
     ])
     def test_each_csv_has_data_rows(self, filename):

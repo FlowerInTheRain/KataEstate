@@ -3,9 +3,9 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from api.maintenances.models.MaintenanceStatuses import MaintenanceStatuses
-from api.maintenances.models.Maintenances import Maintenance, Maintenances
-from api.maintenances.repositories.CommandMaintenances import bulk_create_maintenances, create_maintenance_task, \
+from maintenances.models.MaintenanceStatuses import MaintenanceStatuses
+from maintenances.models.Maintenances import Maintenance, Maintenances
+from maintenances.repositories.CommandMaintenances import bulk_create_maintenances, create_maintenance_task, \
     update_maintenance_task, delete_maintenance_task
 
 

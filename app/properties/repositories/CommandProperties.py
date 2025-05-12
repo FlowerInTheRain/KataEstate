@@ -1,12 +1,12 @@
-from typing import List, Optional
+from typing import List
 
 from db import session
 from flask import current_app
-from properties.models.Properties import Property
-from sqlalchemy import text, Integer
-
 from properties.models.Properties import Properties
+from properties.models.Properties import Property
 from properties.repositories import QueryProperties
+from sqlalchemy import Integer
+
 
 def bulk_create_properties(properties: List[Property]):
     session.bulk_save_objects(properties)
@@ -35,7 +35,6 @@ def cleanup_properties():
     session.commit()
 
 def update_property(updated_property: Property):
-    current_app.logger.info(updated_property)
     in_db = session.get(Property, updated_property.id)
     in_db.address = updated_property.address
     in_db.type = updated_property.type

@@ -1,12 +1,12 @@
 FROM python:3.12-slim
 
 WORKDIR /app
-COPY api/ .
+COPY app/ .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY docker/api/wait-for-it.sh /app/
-COPY api/resources/*.csv /app/resources
+COPY app/resources/*.csv /app/resources
 
 RUN chmod +x /app/wait-for-it.sh
 EXPOSE 5000
