@@ -1,1 +1,0 @@
-dockerize -wait tcp://db:5432 -timeout 5s
