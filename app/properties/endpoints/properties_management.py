@@ -8,7 +8,8 @@ from properties.models.Properties import Properties
 from properties.models.Properties import Property
 from properties.models.PropertyStatuses import PropertyStatuses
 from properties.models.PropertyTypes import PropertyTypes
-from properties.models.dtos.property_dtos import PropertyResponse, AddPropertyRequest, PropertyRequest
+from properties.models.dtos.property_dtos import (CreatePropertyResponse, PropertyResponse, AddPropertyRequest,
+                                                  PropertyRequest)
 from properties.repositories import CommandProperties
 from properties.repositories import QueryProperties
 
@@ -26,7 +27,7 @@ def get_all_properties():  # put application's code here
     return [p.dict() for p in QueryProperties.get_all_properties()], 200
 
 @properties_blueprint.route("/", methods=["POST"])
-@spec.validate(body=Request(AddPropertyRequest), resp=Response())
+@spec.validate(body=Request(AddPropertyRequest), resp=Response(HTTP_201=CreatePropertyResponse))
 def create_property():
     data = request.get_json()
     new_property = Property(**data)
