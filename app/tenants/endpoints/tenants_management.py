@@ -4,7 +4,6 @@ from constants import API_base_path
 from constants import CreateItemResponse
 from flask import request, current_app, Blueprint
 from flask_pydantic_spec import Request, Response
-from flask_restx.fields import Integer
 from properties.models.PaymentStatuses import PaymentStatuses
 from tenants.models.Tenants import Tenants, Tenant
 from tenants.models.dtos.TenantDTOs import TenantResponse, CreateTenant, UpdateTenant
@@ -58,7 +57,7 @@ def update_tenant():
 
 
 @tenants_blueprint.route('/<int:tenant_id>', methods=["DELETE"])
-def delete_tenant(tenant_id: Integer):
+def delete_tenant(tenant_id: int):
     CommandTenants.delete_tenant(tenant_id)
     return Response(status=204)
 

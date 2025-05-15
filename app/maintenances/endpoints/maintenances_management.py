@@ -3,8 +3,6 @@ from typing import List
 
 from flask import request, current_app, Blueprint
 from flask_pydantic_spec import Request, Response
-from flask_restx import Resource, Namespace, fields
-from flask_restx.fields import Integer
 from maintenances.models.MaintenanceStatuses import MaintenanceStatuses
 from maintenances.models.Maintenances import Maintenances, Maintenance
 from maintenances.repositories import CommandMaintenances, QueryMaintenances
@@ -70,7 +68,7 @@ def put():
 
 
 @maintenances_blueprint.route("/<int:task_id>", methods=["DELETE"])
-def delete(task_id: Integer):
+def delete(task_id: int):
     CommandMaintenances.delete_maintenance_task(task_id)
     return Response(status=204)
 
