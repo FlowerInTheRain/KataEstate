@@ -7,6 +7,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_pydantic_spec import FlaskPydanticSpec
 
+
 from db import Base, engine
 from maintenances.mappers.from_csv import to_db_maintenance
 from maintenances.repositories.CommandMaintenances import bulk_create_maintenances
@@ -37,10 +38,15 @@ spec = FlaskPydanticSpec("PDI RE", title="BNP RealEstate Management API", path='
 
 def create_app(testing=False):
     from properties.endpoints.properties_management import properties_blueprint
+    from maintenances.endpoints.maintenances_management import maintenances_blueprint
+    from tenants.endpoints.tenants_management import tenants_blueprint
 
     app = Flask(__name__)
     spec.register(app)
     app.register_blueprint(properties_blueprint)
+    app.register_blueprint(maintenances_blueprint)
+    app.register_blueprint(tenants_blueprint)
+
     CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}}, support_credentials=True,
          methods=["GET","POST", "PUT","DELETE", "OPTIONS"])
 

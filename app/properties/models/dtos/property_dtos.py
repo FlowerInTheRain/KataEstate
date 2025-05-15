@@ -25,10 +25,6 @@ class PropertyDTO(BaseModel):
 class PropertyResponse(RootModel):
     root: List[PropertyDTO]
 
-
-class CreatePropertyResponse(RootModel):
-    root: int
-
 class AddPropertyRequest(BaseModel):
     id: int
     address: str

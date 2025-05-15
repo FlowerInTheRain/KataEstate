@@ -1,61 +1,78 @@
 from datetime import date, datetime
+from typing import List
 
-from flask import request, current_app, Response
+from flask import request, current_app, Blueprint
+from flask_pydantic_spec import Request, Response
 from flask_restx import Resource, Namespace, fields
 from flask_restx.fields import Integer
 from maintenances.models.MaintenanceStatuses import MaintenanceStatuses
 from maintenances.models.Maintenances import Maintenances, Maintenance
 from maintenances.repositories import CommandMaintenances, QueryMaintenances
+from pydantic import BaseModel, RootModel, constr
 
-ns = Namespace('maintenances', description='CRUD Operations on maintenance tasks')
+from app import spec
+from constants import API_base_path, PositiveInt, CreateItemResponse
 
-maintenance_task_model = ns.model('Maintenance', {
-    'id': fields.Integer,
-    'task_description': fields.String,
-    'status': fields.String(required=True, enum=[e.value for e in MaintenanceStatuses]),
-    'scheduled_date': fields.String,
-    'property_id': fields.Integer
-})
+maintenances_blueprint = Blueprint('maintenances management', __name__,
+                                 url_prefix=API_base_path + '/properties')
 
-add_maintenance_task_model = ns.model('AddMaintenanceTask', {
-    'task_description': fields.String,
-    'status': fields.String(required=True, enum=[e.value for e in MaintenanceStatuses]),
-    'scheduled_date': fields.String,
-    'property_id': fields.Integer
-})
+class MaintenanceDTO(BaseModel):
+    id: PositiveInt
+    task_description: str
+    status: str
+    scheduled_date: str
+    property_id: PositiveInt
 
+class CreateMaintenanceRequest(BaseModel):
+    id: PositiveInt
+    task_description: constr(min_length=5, max_length=50)
+    status: MaintenanceStatuses
+    scheduled_date: constr(min_length=10, max_length=10)
+    property_id: PositiveInt
 
-@ns.route("/")
-class BasePath(Resource):
-    @ns.marshal_with(maintenance_task_model, as_list=True)
-    def get(self):  # put application's code here
-        data = QueryMaintenances.get_all_maintenance_tasks()
-        for task in data:
-            current_app.logger.info(task)
-        return data
+class UpdateMaintenanceRequest(BaseModel):
+    id: PositiveInt
+    task_description: str
+    status: str
+    scheduled_date: str
+    property_id: PositiveInt
 
-    @ns.expect(add_maintenance_task_model, validate=True)
-    def post(self):
-        new_task = Maintenances(
-            request.json["task_description"],
-            MaintenanceStatuses(request.json["status"]),
-            request.json["scheduled_date"],
-            request.json["property_id"])
-        return CommandMaintenances.create_maintenance_task(new_task)
+class MaintenancesResponse(RootModel):
+    root: List[MaintenanceDTO]
 
 
-    @ns.expect(maintenance_task_model, validate=True)
-    def put(self):
-        current_tenant = from_json(request.json)
-        CommandMaintenances.update_maintenance_task(current_tenant)
-        return Response(status=204)
+
+@maintenances_blueprint.route("/", methods=["GET"])
+@spec.validate(body=Request(), resp=Response(HTTP_200=MaintenancesResponse))
+def get():  # put application's code here
+    data = QueryMaintenances.get_all_maintenance_tasks()
+    for task in data:
+        current_app.logger.info(task)
+    return data
+
+@maintenances_blueprint.route("/", methods=["POST"])
+@spec.validate(body=Request(CreateMaintenanceRequest), resp=Response(HTTP_201=CreateItemResponse))
+def post():
+    new_task = Maintenances(
+        request.json["task_description"],
+        MaintenanceStatuses(request.json["status"]),
+        request.json["scheduled_date"],
+        request.json["property_id"])
+    return CommandMaintenances.create_maintenance_task(new_task), 201
 
 
-@ns.route('/<int:task_id>')
-class ByID(Resource):
-    def delete(self, task_id: Integer):
-        CommandMaintenances.delete_maintenance_task(task_id)
-        return Response(status=204)
+@maintenances_blueprint.route("/", methods=["PUT"])
+@spec.validate(body=Request(UpdateMaintenanceRequest), resp=Response())
+def put():
+    current_tenant = from_json(request.json)
+    CommandMaintenances.update_maintenance_task(current_tenant)
+    return Response(status=204)
+
+
+@maintenances_blueprint.route("/<int:task_id>", methods=["DELETE"])
+def delete(task_id: Integer):
+    CommandMaintenances.delete_maintenance_task(task_id)
+    return Response(status=204)
 
 def from_json(json):
     mapped_task = Maintenance()

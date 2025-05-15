@@ -1,12 +1,13 @@
 from datetime import date, datetime
 
 from constants import API_base_path
-from flask import request, current_app, Response, Blueprint
-from flask_pydantic_spec import Request
+from constants import CreateItemResponse
+from flask import request, current_app, Blueprint
+from flask_pydantic_spec import Request, Response
 from flask_restx.fields import Integer
 from properties.models.PaymentStatuses import PaymentStatuses
 from tenants.models.Tenants import Tenants, Tenant
-from tenants.models.dtos.TenantDTOs import TenantResponse, TenantIdResponse, CreateTenant, UpdateTenant
+from tenants.models.dtos.TenantDTOs import TenantResponse, CreateTenant, UpdateTenant
 from tenants.repositories import CommandTenants
 from tenants.repositories import QueryTenants
 
@@ -24,8 +25,8 @@ def get_all_tenants():  # put application's code here
         current_app.logger.info(tenant)
     return [d.dict() for d in data],200
 
-@tenants_blueprint.route("/", methods=["GET"])
-@spec.validate(body=Request(CreateTenant), resp=Response(HTTP_201=TenantIdResponse))
+@tenants_blueprint.route("/", methods=["POST"])
+@spec.validate(body=Request(CreateTenant), resp=Response(HTTP_201=CreateItemResponse))
 def create_tenant():
     new_tenant = Tenants(
         request.json["name"],
