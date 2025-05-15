@@ -5,7 +5,8 @@ from logging.config import dictConfig
 
 from flask import Flask
 from flask_cors import CORS
-from flask_restx import Api
+from flask_pydantic_spec import FlaskPydanticSpec
+
 
 from db import Base, engine
 from maintenances.mappers.from_csv import to_db_maintenance
@@ -32,23 +33,23 @@ dictConfig({
     }
 })
 
-
+spec = FlaskPydanticSpec("PDI RE", title="BNP RealEstate Management API", path='swagger')
 
 
 def create_app(testing=False):
-    from properties.endpoints.properties_management import ns as properties_management_ns
-    from healthcheck.endpoints.get_healthcheck import ns as healthcheck_ns
-    from tenants.endpoints.tenants_management import ns as tenants_ns
-    from maintenances.endpoints.maintenances_management import ns as maintenance_tasks_ns
-
-    tenants_paths  = [tenants_ns]
-    healthcheck_paths = [healthcheck_ns]
-    properties_paths = [properties_management_ns]
-    maintenances_paths = [maintenance_tasks_ns]
+    from properties.endpoints.properties_management import properties_blueprint
+    from maintenances.endpoints.maintenances_management import maintenances_blueprint
+    from tenants.endpoints.tenants_management import tenants_blueprint
 
     app = Flask(__name__)
+    spec.register(app)
+    app.register_blueprint(properties_blueprint)
+    app.register_blueprint(maintenances_blueprint)
+    app.register_blueprint(tenants_blueprint)
+
     CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}}, support_credentials=True,
          methods=["GET","POST", "PUT","DELETE", "OPTIONS"])
+
     logging.basicConfig(level=logging.DEBUG)
     handler = logging.StreamHandler()
     handler.setLevel(logging.DEBUG)
@@ -57,10 +58,7 @@ def create_app(testing=False):
     )
     handler.setFormatter(formatter)
     app.logger.addHandler(handler)
-    api = Api(app, doc='/swagger', prefix='/api', mask_swagger=False)
-    all_namespaces = (healthcheck_paths + properties_paths + tenants_paths + maintenances_paths )
-    for ns in all_namespaces:
-        api.add_namespace(ns)
+
 
     with app.app_context():
         Base.metadata.create_all(bind=engine)

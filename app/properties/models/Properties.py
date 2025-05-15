@@ -40,7 +40,19 @@ class Property(Base):
     child_maintenances = relationship("Maintenance", back_populates="property", cascade="all, delete-orphan")
     child_tenants = relationship("Tenant", back_populates="property", cascade="all, delete-orphan")
 
+
+
     def __repr__(self):
-            return (f"<Property(address={self.address}, type={self.type}, "
-                    f"status={self.status}, purchase_date={self.purchase_date}, "
+            return (f"<Property(id={self.id}, address={self.address}, type={self.type}, "
+                    f"status={self.status}, purchase_date={self.purchase_date.strftime("%Y-%m-%d")}, "
                     f"price={self.price})>")
+
+    def dict(self):
+        return {
+            "id": self.id,
+            "address": self.address,
+            "type": PropertyTypes(self.type).value,
+            "status": PropertyStatuses(self.status).value,
+            "purchase_date": self.purchase_date.strftime("%Y-%m-%d"),
+            "price": self.price,
+        }
