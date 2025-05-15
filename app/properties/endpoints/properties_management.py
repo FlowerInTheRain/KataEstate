@@ -1,7 +1,7 @@
 from datetime import date
 
 from constants import API_base_path
-from flask import Blueprint, request, current_app
+from flask import Blueprint, request
 from flask_pydantic_spec import Request, Response
 from properties.mappers.with_id_to_db import from_json
 from properties.models.Properties import Properties
@@ -15,7 +15,7 @@ from properties.repositories import QueryProperties
 
 from app import spec
 
-properties_blueprint = Blueprint('properties', __name__,
+properties_blueprint = Blueprint('properties management', __name__,
                                  url_prefix=API_base_path + '/properties')
 
 
