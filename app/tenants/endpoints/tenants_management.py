@@ -12,7 +12,7 @@ from tenants.repositories import CommandTenants
 
 ns = Namespace('tenants', description='CRUD Operations on tenants')
 
-tenant_model = ns.model('Property', {
+tenant_model = ns.model('Tenants', {
     'id': fields.Integer,
     'name': fields.String(required=True, min_length=5, max_length=50),
     'contact_info': fields.String(required=True, max_length=12,min_length=10),
@@ -22,7 +22,7 @@ tenant_model = ns.model('Property', {
     'property_id': fields.Integer(required=True)
 })
 
-add_tenant_model = ns.model('AddProperty', {
+add_tenant_model = ns.model('AddTenant', {
     'name': fields.String(required=True, min_length=5, max_length=50),
     'contact_info': fields.String(required=True, max_length=12,min_length=10),
     'lease_term_start': fields.String(required=True, min_length=10, max_length=10),

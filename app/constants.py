@@ -1,0 +1,1 @@
+API_base_path = "/api"

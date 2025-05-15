@@ -1,63 +1,53 @@
 from datetime import date
 
-from flask import request, Response
-from flask_restx import Resource, Namespace, fields
+from constants import API_base_path
+from flask import Blueprint, request, current_app
+from flask_pydantic_spec import Request, Response
 from properties.mappers.with_id_to_db import from_json
 from properties.models.Properties import Properties
 from properties.models.Properties import Property
 from properties.models.PropertyStatuses import PropertyStatuses
 from properties.models.PropertyTypes import PropertyTypes
+from properties.models.dtos.property_dtos import PropertyResponse, AddPropertyRequest, PropertyRequest
 from properties.repositories import CommandProperties
 from properties.repositories import QueryProperties
 
-ns = Namespace('properties', description='CRUD Operations on real estate')
+from app import spec
 
-property_model = ns.model('Property', {
-    'id': fields.Integer,
-    'address': fields.String,
-    'type': fields.String,
-    'status': fields.String,
-    'purchase_date': fields.String,
-    'price': fields.Integer
-})
+properties_blueprint = Blueprint('properties', __name__,
+                                 url_prefix=API_base_path + '/properties')
 
-add_property_model = ns.model('AddProperty', {
-    'address': fields.String(required=True, min_length=10),
-    'type': fields.String(required=True, enum=[e.value for e in PropertyTypes]),
-    'status': fields.String(required=True, enum=[e.value for e in PropertyStatuses]),
-    'purchase_date': fields.String,
-    'price': fields.Integer(required=True, min=0)
-})
 
-@ns.route("/")
-class BasePath(Resource):
-    @ns.marshal_with(property_model, as_list=True)
-    def get(self):  # put application's code here
-        return QueryProperties.get_all_properties()
-    @ns.expect(add_property_model, validate=True)
-    def post(self):
-        new_property = Properties(request.json["address"],
-                                  PropertyTypes(request.json["type"]),
-                                  PropertyStatuses(request.json["status"]),
-                                  request.json["purchase_date"],
-                                  request.json["price"])
-        purchase_date = date.fromisoformat(request.json["purchase_date"])
-        if purchase_date < date.today():
-            return CommandProperties.create_property(new_property)
-        else:
-            return Response(status=400)
-    @ns.expect(property_model, validate=True)
-    def put(self):
-        current_property = from_json(request.json)
-        purchase_date = current_property.purchase_date
-        if purchase_date < date.today():
-            CommandProperties.update_property(current_property)
-            return Response(status=204)
-        else:
-            return Response(status=400)
 
-@ns.route('/<int:property_id>')
-class ByID(Resource):
-    def delete(self, property_id: int):
-        CommandProperties.delete_property(property_id)
+
+@properties_blueprint.route("/", methods=["GET"])
+@spec.validate(body=Request(), resp=Response(HTTP_200=PropertyResponse))
+def get_all_properties():  # put application's code here
+    return [p.dict() for p in QueryProperties.get_all_properties()], 200
+
+@properties_blueprint.route("/", methods=["POST"])
+@spec.validate(body=Request(AddPropertyRequest), resp=Response())
+def create_property():
+    data = request.get_json()
+    new_property = Property(**data)
+    purchase_date = date.fromisoformat(request.json["purchase_date"])
+    if purchase_date < date.today():
+        return CommandProperties.create_property(new_property), 201
+    else:
+        return Response(status=400)
+
+@properties_blueprint.route("/", methods=["PUT"])
+@spec.validate(body=Request(PropertyRequest), resp=Response())
+def update_property():
+    current_property = from_json(request.json)
+    purchase_date = current_property.purchase_date
+    if purchase_date < date.today():
+        CommandProperties.update_property(current_property)
         return Response(status=204)
+    else:
+        return Response(status=400)
+
+@properties_blueprint.route('/<int:property_id>', methods=["DELETE"])
+def delete_property(property_id: int):
+    CommandProperties.delete_property(property_id)
+    return Response(status=204)
